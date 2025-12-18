@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-rag-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: banking-rag-ui
+  template:
+    metadata:
+      labels:
+        app: banking-rag-ui
+    spec:
+      containers:
+      - name: ui
+        image: rigswattwaacr.azurecr.io/banking-rag-ui:1.1
+        ports:
+        - containerPort: 8501
+        env:
+        - name: API_URL
+          value: http://banking-rag-api:8000

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-rag-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: banking-rag-api
+  template:
+    metadata:
+      labels:
+        app: banking-rag-api
+    spec:
+      containers:
+      - name: api
+        image: rigswattwaacr.azurecr.io/banking-rag-api:1.0
+        ports:
+        - containerPort: 8000
+        env:
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: openai-secret
+              key: OPENAI_API_KEY

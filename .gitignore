@@ -1,0 +1,21 @@
+# Secrets
+.env
+.streamlit/secrets.toml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env/
+.venv/
+
+# Data & Index
+faiss_index/
+data/
+
+# Docker
+*.log
+
+# OS
+.DS_Store

@@ -1,0 +1,13 @@
+from pydantic import BaseModel
+from typing import List
+
+class AskRequest(BaseModel):
+    question: str
+
+class SourceSnippet(BaseModel):
+    source: str
+    snippet: str
+
+class AskResponse(BaseModel):
+    answer: str
+    sources: List[SourceSnippet]
