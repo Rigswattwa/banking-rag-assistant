@@ -1,0 +1,37 @@
+name: CI - Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  ACR_NAME: rigswattwaacr
+  ACR_LOGIN_SERVER: rigswattwaacr.azurecr.io
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Login to ACR
+      run: az acr login --name $ACR_NAME
+
+    - name: Build & Push FastAPI Image
+      run: |
+        docker build -t $ACR_LOGIN_SERVER/banking-rag-api:${IMAGE_TAG} .
+        docker push $ACR_LOGIN_SERVER/banking-rag-api:${IMAGE_TAG}
+
+    - name: Build & Push Streamlit Image
+      run: |
+        docker build -t $ACR_LOGIN_SERVER/banking-rag-ui:${IMAGE_TAG} -f Dockerfile.streamlit .
+        docker push $ACR_LOGIN_SERVER/banking-rag-ui:${IMAGE_TAG}
